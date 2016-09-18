@@ -211,10 +211,9 @@ public class BluetoothOppObexServerSession extends ServerRequestHandler implemen
                 String extension, type;
                 int dotIndex = name.lastIndexOf(".");
                 if (dotIndex < 0 && mimeType == null) {
-                    if (D) Log.w(TAG, "There is no file extension or mime type," +
-                            "reject the transfer");
-                    pre_reject = true;
-                    obexResponse = ResponseCodes.OBEX_HTTP_BAD_REQUEST;
+                    if (D) Log.w(TAG, "Mimetype is null. Fixed to  to */*");
+                    pre_reject = false;
+                    mimeType = "*/*";
                 } else {
                     extension = name.substring(dotIndex + 1).toLowerCase();
                     MimeTypeMap map = MimeTypeMap.getSingleton();
@@ -225,9 +224,9 @@ public class BluetoothOppObexServerSession extends ServerRequestHandler implemen
 
                     } else {
                         if (mimeType == null) {
-                            if (D) Log.w(TAG, "Can't get mimetype, reject the transfer");
-                            pre_reject = true;
-                            obexResponse = ResponseCodes.OBEX_HTTP_UNSUPPORTED_TYPE;
+                            if (D) Log.w(TAG, "Can't get mimetype. Fixed to  to */*");
+                            pre_reject = false;
+                            mimeType = "*/*";
                         }
                     }
                     if (mimeType != null) {
